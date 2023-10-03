@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from tqdm import tqdm
+from colorama import Fore
 
 class LSTM(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, output_size):
@@ -21,7 +22,18 @@ class LSTM(nn.Module):
         out = self.fc(out)
         return out
 
+class LSTMPredictor:
+    def __init__(self, model, device):
+        self.model = model
+        self.device = device
 
+    def predict(self, x):
+        x = x.unsqueeze(0)  # Add a batch dimension
+        x = x.to(self.device)
+        self.model.eval()
+        with torch.no_grad():
+            output = self.model(x)
+        return output.squeeze().cpu().numpy()
 
 class LSTMTrainer:
         def __init__(self, model, train_loader, val_loader, criterion, optimizer, device):
@@ -61,7 +73,8 @@ class LSTMTrainer:
                 train_loss = 0.0
                 val_loss = 0.0
                 self.model.train()
-                with tqdm(total=len(self.train_loader), desc=f"Epoch {epoch+1}/{num_epochs}, Train Loss: {train_loss/len(self.train_loader):.4f}, Val Loss: {val_loss/len(self.val_loader):.4f}") as pbar:
+                with tqdm(total=len(self.train_loader), desc=f"Epoch {epoch+1}/{num_epochs}, Train Loss: {train_loss/len(self.train_loader):.4f}, Val Loss: {val_loss/len(self.val_loader):.4f}",
+                          bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.BLUE, Fore.RESET)) as pbar:
                     for i, (inputs, targets) in enumerate(self.train_loader):
                         inputs, targets = inputs.to(self.device), targets.to(self.device)
                         self.optimizer.zero_grad()
@@ -105,16 +118,4 @@ class LSTMTrainer:
             ax.set_title("Training and Validation Losses")
             os.makedirs('./results/loss_curves/', exist_ok=True)
             plt.savefig('./results/loss_curves/loss_curves.png', dpi=800)
-            
-class LSTMPredictor:
-    def __init__(self, model, device):
-        self.model = model
-        self.device = device
-
-    def predict(self, x):
-        self.model.eval()
-        with torch.no_grad():
-            x = x.to(self.device)
-            output = self.model(x)
-        return output.cpu().numpy()
 

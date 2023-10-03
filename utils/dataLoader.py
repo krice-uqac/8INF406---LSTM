@@ -7,6 +7,8 @@ import torch
 from sklearn.preprocessing import MinMaxScaler
 from torch.utils.data import Dataset, DataLoader
 from config import *
+from tqdm import tqdm
+from colorama import Fore
 
 class LoadingData:
     __instance = None
@@ -46,10 +48,12 @@ class LoadingData:
         data_scaler: np.array = self.__scaler.fit_transform(self.__data)
         self.__data = pd.DataFrame(data_scaler, columns=self.__data.columns, index=self.__data.index)
         
+    from tqdm import tqdm
+
     def _prepare_data(self, time_windows_length:int, overlap:int, prediction_length:int) -> list[tuple[pd.DataFrame, pd.DataFrame]]:
         data = self.get_data()
         time_window = []
-        for i in range(0, len(data) - overlap, overlap):
+        for i in tqdm(range(0, len(data) - overlap, overlap), desc='Preparing data', bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.GREEN, Fore.RESET)):
             if i + time_windows_length + prediction_length <= len(data):
                 X = data.iloc[i:i + time_windows_length]
                 y = data.iloc[i + time_windows_length:i + time_windows_length + prediction_length]
