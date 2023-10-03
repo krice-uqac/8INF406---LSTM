@@ -62,7 +62,7 @@ prediction = Dataset.get_scaler().inverse_transform(prediction)
 
 os.makedirs('./results/prediction/', exist_ok=True)
 
-plt.figure(figsize=(12, 6))
+plt.figure(figsize=(12, 8))
 plt.plot(input[:, 0], label='input-production')
 plt.plot(range(len(input[:, 0]), len(input[:, 0]) + len(output[:, 0])), output[:, 0], label='target-production')
 plt.plot(range(len(input[:, 0]), len(input[:, 0]) + len(prediction[:, 0])), prediction[:, 0], label='prediction-production')
@@ -73,7 +73,7 @@ plt.title('Production Prediction')
 plt.tight_layout()
 plt.savefig('./results/prediction/production.png', dpi=800)
 
-plt.figure(figsize=(12, 6))
+plt.figure(figsize=(12, 8))
 plt.plot(input[:, 1], label='input-consumption')
 plt.plot(range(len(input[:, 1]), len(input[:, 1]) + len(output[:, 1])), output[:, 1], label='target-consumption')
 plt.plot(range(len(input[:, 1]), len(input[:, 1]) + len(prediction[:, 1])), prediction[:, 1], label='prediction-consumption')
