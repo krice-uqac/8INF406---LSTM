@@ -5,7 +5,7 @@ from torch import nn
 from torch.utils.data import DataLoader
 from utils.dataLoader import LoadingData
 from NN_LSTM.LSTM import LSTM
-from NN_LSTM.LSTM import LSTMTrainer
+from NN_LSTM.LSTM import LSTMTrainer, LSTMPredictor
 from config import *
 
 
@@ -43,5 +43,16 @@ trainer.train(num_epochs=EPOCHS)
 end_time = timeit.default_timer()
 print(f"Training took {end_time - start_time:.2f} seconds.")
 
+# Load the saved model parameters
 
+model.load_state_dict(torch.load('results/models/best_model.pt'))
+
+# Make a prediction with the loaded model
+predictor = LSTMPredictor(model=model, device=device)
+
+input, output = next(iter(test_dataloader))
+prediction = predictor.predict(input)
+
+print(prediction)
+### Code to add if you want to plot the prediction
 
