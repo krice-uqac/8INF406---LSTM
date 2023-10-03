@@ -53,6 +53,6 @@ predictor = LSTMPredictor(model=model, device=device)
 input, output = next(iter(test_dataloader))
 prediction = predictor.predict(input)
 
-print(prediction)
+print(prediction.shape)
 ### Code to add if you want to plot the prediction
 
