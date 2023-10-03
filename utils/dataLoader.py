@@ -6,6 +6,7 @@ import torch
 
 from sklearn.preprocessing import MinMaxScaler
 from torch.utils.data import Dataset, DataLoader
+from config import *
 
 class LoadingData:
     __instance = None
@@ -20,7 +21,7 @@ class LoadingData:
             cls.__instance._handle_scaler()
         return cls.__instance
 
-    def _load_data(self, data_dir='./data'):
+    def _load_data(self, data_dir=DATA_FOLDER):
         for filename in os.listdir(data_dir):
             if filename.endswith('.csv'):
                 file_path = os.path.join(data_dir, filename)
