@@ -19,6 +19,9 @@ class LSTM(nn.Module):
         out = self.fc(out)
         return out
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 class LSTMTrainer:
         def __init__(self, model, train_loader, val_loader, criterion, optimizer, device):
             """
@@ -42,6 +45,8 @@ class LSTMTrainer:
             self.results_dir = './results/models/'
             if not os.path.exists(self.results_dir):
                 os.makedirs(self.results_dir)
+            self.train_losses = []
+            self.val_losses = []
 
         def train(self, num_epochs):
             """
@@ -79,9 +84,26 @@ class LSTMTrainer:
                 
                 if val_loss < self.best_val_loss:
                     self.best_val_loss = val_loss
-                    checkpoint_path = os.path.join(self.results_dir, f"best_model_epoch_{epoch+1}.pt")
+                    checkpoint_path = os.path.join(self.results_dir, f"best_model.pt")
                     torch.save(self.model.state_dict(), checkpoint_path)
                     print(f"Saved checkpoint at {checkpoint_path}")
+                
+                self.train_losses.append(train_loss/len(self.train_loader))
+                self.val_losses.append(val_loss/len(self.val_loader))
+        
+        def plot_loss_curves(self):
+            """
+            Plots the training and validation loss curves.
+            """
+            sns.set_style("darkgrid")
+            fig, ax = plt.subplots()
+            sns.lineplot(x=range(1, len(self.train_losses)+1), y=self.train_losses, ax=ax, label="Training Loss")
+            sns.lineplot(x=range(1, len(self.val_losses)+1), y=self.val_losses, ax=ax, label="Validation Loss")
+            ax.set_xlabel("Epoch")
+            ax.set_ylabel("Loss")
+            ax.set_title("Training and Validation Losses")
+            os.makedirs('./results/loss_curves/', exist_ok=True)
+            plt.savefig('./results/loss_curves/loss_curves.png', dpi=800)
             
 class LSTMPredictor:
     def __init__(self, model, device):
