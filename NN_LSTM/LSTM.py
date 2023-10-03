@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 import os
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 from tqdm import tqdm
 
@@ -19,8 +21,7 @@ class LSTM(nn.Module):
         out = self.fc(out)
         return out
 
-import matplotlib.pyplot as plt
-import seaborn as sns
+
 
 class LSTMTrainer:
         def __init__(self, model, train_loader, val_loader, criterion, optimizer, device):
