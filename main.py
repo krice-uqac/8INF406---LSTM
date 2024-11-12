@@ -1,3 +1,6 @@
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 import torch
 import timeit
 import matplotlib.pyplot as plt
