@@ -37,6 +37,20 @@ source .env/bin/activate pour Linux et MacOS
 ```
 pip install -–no-cache-directory -r requirements.txt
 ```
+
+<p>Maintenant, vous devez installer pytorch manuellement</p>
+
+```
+Pour GPU, exécuter la commande suivante :
+
+Windows: pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+Linux: pip3 install torch torchvision torchaudio
+
+Pour CPU, exécuter la commande suivante :
+
+Windows/Mac : pip3 install torch torchvision torchaudio
+Linux : pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+```
 <p>Pour changer des paramètres pour l’exécution du code, il faut le faire dans le fichier config.py</p>
 
 ```
