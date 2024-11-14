@@ -14,7 +14,7 @@
 <a href=https://github.com/krice-uqac/8INF406---LSTM>https://github.com/krice-uqac/8INF406---LSTM</a>
 <br></br>
 
-```
+```bash
 git clone https://github.com/krice-uqac/8INF406---LSTM
 ```
 <p>Ensuite, vous devez créer un environnement virtuel python en utilisant la commande suivante :</p>
